@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application implements EventHandler<ActionEvent> {
 
-    Stage window;
-    Button addTask, delTask;
-    TextField t_addTask;
-
-    ListView<String> tasks;
+    private Stage window;
+    private Button addTask, delTask;
+    private TextField t_addTask;
+    private ListView<String> tasks = new ListView<>();
+    private ListView<String> projects = new ListView<>();
 
     public static void main(String[] args) {
         //required for starting FX stuff
@@ -34,9 +34,9 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         window.setTitle("Working Title");
 
         addTask = new Button("Add Task");
-        addTask.setOnAction((event) -> {
-            addTask();
-        });
+        addTask.setOnAction((event) -> addTask());
+
+
 
         //Add task button, not really necessary?
 
@@ -48,7 +48,6 @@ public class Main extends Application implements EventHandler<ActionEvent> {
                 addTask(); }
         });
 
-        tasks = new ListView<>();
         //Multiselect
         tasks.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tasks.setPrefWidth(800);
@@ -60,9 +59,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
         delTask = new Button("Delete Task");
 
-        delTask.setOnAction((ActionEvent e) -> {
-            delTask();
-        });
+        delTask.setOnAction((ActionEvent e) -> delTask());
 
 
         //TitledPane tp = new TitledPane("My Titled Pane", new Button("Button"));
@@ -73,14 +70,17 @@ public class Main extends Application implements EventHandler<ActionEvent> {
         HBox topBar = new HBox();
         HBox statusBar = new HBox();
         VBox leftList = new VBox();
+        VBox rightList = new VBox();
 
         topBar.getChildren().addAll(new Label("TopBar"));
         leftList.getChildren().addAll(t_addTask,tasks, delTask);
+        rightList.getChildren().addAll(projects);
         statusBar.getChildren().addAll(new Label("StatusBar"));
 
         borderPane.setTop(topBar);
         borderPane.setCenter(projectLabel);
         borderPane.setBottom(statusBar);
+        borderPane.setRight(rightList);
         borderPane.setLeft(leftList);
         borderPane.setPrefSize(500,400);
 
@@ -115,7 +115,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
             addTask();
         }
     }
-    public void addTask(){
+    private void addTask(){
         String text = t_addTask.getText();
         if(!tasks.getItems().contains(text)){
             NextStep nextStep = new NextStep(text);
@@ -132,7 +132,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
     }
 
-    public void delTask(){
+    private void delTask(){
         //Allows for multi-select delete
         ObservableList<String> list = tasks.getSelectionModel().getSelectedItems();
         tasks.getItems().removeAll(list);
