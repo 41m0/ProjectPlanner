@@ -3,7 +3,6 @@ package com.company;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -33,6 +32,23 @@ public class Main extends Application {
         window = primaryStage;
         window.setTitle("Working Title");
 
+        /*
+        Menu Bar
+         */
+
+        MenuBar menuBar = new MenuBar();
+
+        //visible entry on the menu bar
+        Menu menuFile = new Menu("File");
+
+        //one Item of an entry
+        MenuItem itmLoadProject = new MenuItem("Load Project");
+
+        //Adding an item to an entry
+        menuFile.getItems().addAll(itmLoadProject);
+
+        //Adding the entries to the menu bar
+        menuBar.getMenus().addAll(menuFile);
         /*
         Tasklist
          */
@@ -86,26 +102,30 @@ public class Main extends Application {
 
 
         //TitledPane tp = new TitledPane("My Titled Pane", new Button("Button"));
-        Label projectLabel = new Label("Projects");
+        //Label projectLabel = new Label("Projects");
         //Boderpane
         BorderPane borderPane = new BorderPane();
-        //ToolBar toolbar = new ToolBar();
         HBox topBar = new HBox();
+        topBar.setPadding(new Insets(10,10,10,10));
         HBox statusBar = new HBox();
+        statusBar.setPadding(new Insets(10,10,10,10));
         VBox leftList = new VBox();
+        leftList.setPadding(new Insets(20,10,10,10));
         VBox rightList = new VBox();
+        rightList.setPadding(new Insets(20,10,10,10));
 
-        topBar.getChildren().addAll(new Label("TopBar"));
+        topBar.getChildren().addAll(menuBar);  //topbar currently not used
         rightList.getChildren().addAll(addTask,tasks, delTask);
         leftList.getChildren().addAll(addProject, projects, delProject);
         statusBar.getChildren().addAll(new Label("StatusBar"));
 
-        borderPane.setTop(topBar);
-        borderPane.setCenter(projectLabel);
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(rightList);
         borderPane.setBottom(statusBar);
-        borderPane.setRight(rightList);
+        borderPane.setRight(null);
         borderPane.setLeft(leftList);
         borderPane.setPrefSize(500,400);
+        //borderPane.setPadding(new Insets(0,0,10,10));
 
         //Gridpane
         GridPane grid = new GridPane();
