@@ -7,7 +7,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 //to use FX stuff, main must extend Application
@@ -15,7 +17,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private Stage window;
-    private Button delTask, delProject;
+    private Button delTask, delProject, test;
     private TextField addTask, addProject;
     private ListView<String> tasks = new ListView<>();
     private ListView<String> projects = new ListView<>();
@@ -71,7 +73,6 @@ public class Main extends Application {
         });
 
         delTask = new Button("Delete Task");
-
         delTask.setOnAction((ActionEvent e) -> delTask());
 
         /*
@@ -127,32 +128,20 @@ public class Main extends Application {
         borderPane.setPrefSize(500,400);
         //borderPane.setPadding(new Insets(0,0,10,10));
 
-        //Gridpane
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10,10,10,10));
-        grid.getColumnConstraints().add(new ColumnConstraints(500));
-        grid.getColumnConstraints().add(new ColumnConstraints(300));
-        grid.setVgap(8);
-        grid.setHgap(10);
-
-        //fill the grid
-        //grid.getChildren().addAll(tp);
-//        grid.add(projectLabel,0,0);
-//        grid.add(addTask,1,0);
-        //making Content for the stage
         Scene scene = new Scene(borderPane, 1000, 600);
         window.setScene(scene);
+        window.show();
+        window.setOnCloseRequest(e -> closeProgram());
 
         //displaying the stage
-        window.show();
-
-
-
         //The entire window of the program is called the Stage
         //Content inside the window: Scene
     }
 
     private void addTask(){
+
+        String selectedPrjName = projects.getSelectionModel().getSelectedItem();
+
         String text = addTask.getText();
         if(!tasks.getItems().contains(text)){
             NextStep nextStep = new NextStep(text);
@@ -171,8 +160,8 @@ public class Main extends Application {
     private void addProject(){
         String text = addProject.getText();
         if(!projects.getItems().contains(text)){
-            NextStep nextStep = new NextStep(text);
-            projects.getItems().add(nextStep.toString());
+            Project project = new Project(text);
+            projects.getItems().add(project.getName());
             addProject.clear();
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -184,6 +173,10 @@ public class Main extends Application {
         }
     }
 
+    private void printProjectList() {
+        //TODO: print out Project LIst
+    }
+
     private void delTask(){
         //Allows for multi-select delete
         ObservableList<String> list = tasks.getSelectionModel().getSelectedItems();
@@ -193,5 +186,12 @@ public class Main extends Application {
         //Allows for multi-select delete
         ObservableList<String> list = projects.getSelectionModel().getSelectedItems();
         projects.getItems().removeAll(list);
+    }
+
+    private void closeProgram() {
+
+
+        //TODO: save everything appropriately
+        window.close();
     }
 }
