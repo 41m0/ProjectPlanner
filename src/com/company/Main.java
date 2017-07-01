@@ -20,6 +20,7 @@ public class Main extends Application {
     private Button delTask, delProject, test;
     private TextField addTask, addProject;
     private ListView<String> tasks = new ListView<>();
+    private ProjectList projectList = new ProjectList();
     private ListView<String> projects = new ListView<>();
 
     public static void main(String[] args) {
@@ -79,7 +80,6 @@ public class Main extends Application {
         Project list
          */
         addProject = new TextField();
-        // if(addTask.getText().isEmpty()) addTask.setDisable(true);
         addProject.setPromptText("Define Project");
         addProject.setOnKeyPressed((event) -> {
             if(event.getCode() == KeyCode.ENTER) {
@@ -140,9 +140,8 @@ public class Main extends Application {
 
     private void addTask(){
 
-        String selectedPrjName = projects.getSelectionModel().getSelectedItem();
-
         String text = addTask.getText();
+        //TODO: abfrage auf Project beziehen, nicht auf die Listview
         if(!tasks.getItems().contains(text)){
             NextStep nextStep = new NextStep(text);
             tasks.getItems().add(nextStep.toString());
@@ -159,8 +158,11 @@ public class Main extends Application {
 
     private void addProject(){
         String text = addProject.getText();
+        // TODO: Abfrage auf ProjektList beziehen, nicht auf die Listview
         if(!projects.getItems().contains(text)){
             Project project = new Project(text);
+            projectList.addNewProject(project);
+
             projects.getItems().add(project.getName());
             addProject.clear();
         } else {
